@@ -1,13 +1,11 @@
 import { starsService } from '../services/StarsService'
-import { galaxiesService } from '../services/GalaxiesService'
 import BaseController from '../utils/BaseController'
-export class GalaxiesController extends BaseController {
+export class StarsController extends BaseController {
   constructor() {
-    super('api/galaxies')
+    super('api/stars')
     this.router
       .get('', this.getAll)
       .get('', this.getById)
-      .get('/:id/stars', this.getStarsByGalaxyId)
       .post('', this.create)
       .put('/:id', this.edit)
       .delete('/:id', this.destroy)
@@ -15,8 +13,8 @@ export class GalaxiesController extends BaseController {
 
   async getAll(req, res, next) {
     try {
-      const galaxies = await galaxiesService.getAll(req.query)
-      res.send(galaxies)
+      const stars = await starsService.getAll(req.query)
+      res.send(stars)
     } catch (error) {
       next(error)
     }
@@ -24,16 +22,7 @@ export class GalaxiesController extends BaseController {
 
   async getById(req, res, next) {
     try {
-      const galaxies = await galaxiesService.getById(req.params.id)
-      res.send(galaxies)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async getStarsByGalaxyId(req, res, next) {
-    try {
-      const stars = await starsService.getAll({ galaxyId: req.params.id })
+      const stars = await starsService.getById(req.params.id)
       res.send(stars)
     } catch (error) {
       next(error)
@@ -42,8 +31,8 @@ export class GalaxiesController extends BaseController {
 
   async create(req, res, next) {
     try {
-      const galaxy = await galaxiesService.create(req.body)
-      res.send(galaxy)
+      const star = await starsService.create(req.body)
+      res.send(star)
     } catch (error) {
       next(error)
     }
@@ -52,8 +41,8 @@ export class GalaxiesController extends BaseController {
   async edit(req, res, next) {
     try {
       req.body.id = req.params.id
-      const galaxy = await galaxiesService.edit(req.body)
-      res.send(galaxy)
+      const star = await starsService.edit(req.body)
+      res.send(star)
     } catch (error) {
       next(error)
     }
@@ -61,7 +50,7 @@ export class GalaxiesController extends BaseController {
 
   async destroy(req, res, next) {
     try {
-      const galaxy = await galaxiesService.destroy(req.params.id)
+      const star = await starsService.destroy(req.params.id)
       res.send({ message: 'Successfully Deleted' })
     } catch (error) {
       next(error)
